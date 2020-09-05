@@ -19,9 +19,15 @@ In today’s world, fast and efficient communication on the network between the 
 
 This project focuses on implementing **Layer 2 i.e. Data-Link Layer** of TCP/IP Stack. The project mainly focuses on Graph Data Structures highlighting the features of Generic Graph Topology. The project will use routers, switches, links as well as nodes to depict the overall functionality of network topology, the entire packet journey (on sending and receiving machines) through the Data Link Layer of TCP/IP Model along with a minimal use of Socket Programming will be shown in this project.
 
+## Contributors
+
+1. [Kshitiz Saini](https://github.com/kshitizsaini113)
+2. [Saloni Saxena](https://github.com/SaloniSaxena01)
+3. [Pratyusha Agarwal](https://github.com/pratyusha1098-pa)
+
 ---
 
-Full documentation of the project is available under [Project Synopsis](Project_Form/SynopsisReport.pdf)
+Full documentation of the project is available under [Project Synopsis](Project_Form/Synopsis_Report.pdf)
 
 ---
 The project is licensed under [GNU General Public License](LICENSE) 
