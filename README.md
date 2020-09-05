@@ -27,7 +27,7 @@ This project focuses on implementing **Layer 2 i.e. Data-Link Layer** of TCP/IP 
 
 ---
 
-Full documentation of the project is available under [Project Synopsis](Project_Form/Synopsis_Report.pdf)
+Full documentation of the project is available under [Project Synopsis](Synopsis_Report/SynopsisReport.pdf)
 
 ---
 The project is licensed under [GNU General Public License](LICENSE) 
