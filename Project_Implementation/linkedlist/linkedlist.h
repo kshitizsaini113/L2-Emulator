@@ -41,5 +41,21 @@ typedef struct _doublylinkedlist
 // To mark the continuity, another Macro is defined.
 
 
+#define LINKED_LIST_DATA_FROM_OFFSET(dllptr, offset)                                                        \
+    (void *)((char *)(dllptr) - offset)
+// Returns the data pointer pointing to the data at a specified offset.
+// (char *)(dllptr) : Converts the pointer to the character so that offset can be seperated and 
+// address value is returned.
+// (void *) typecasts the result to the void pointer so as to handle any type of the data.
+
+ 
+#define LINKED_LIST_TO_STRUCT(function_name, structure_name, field_name)                                    \
+    static inline structure_name * function_name(doublylinkedlist_t *dllptr)                                \
+    {                                                                                                       \
+        return (structure_name *)((char *)(dllptr) - (char *)&(((structure_name *)0)->field_name));         \
+    }
+// Takes a Linked List, and returns a structure part from it.
+
+
 #endif
 // Ending Header File Management
