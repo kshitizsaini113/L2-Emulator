@@ -12,6 +12,7 @@ typedef struct _doublylinkedlist
 // a part of the node, not as a pointer which points to some structure.
 
 
+// Declaring the functions to be defined in the c file.
 void doubly_linkedlist_add_next(doublylinkedlist_t *current_doublylinkedlist, 
                                 doublylinkedlist_t *new_doublylinkedlist);
 
@@ -28,6 +29,12 @@ void doubly_linkedlist_add_last(doublylinkedlist_t *base_doublylinkedlist,
 void delete_doubly_linkedlist(doublylinkedlist_t *base_doublylinkedlist);
 
 unsigned int get_doubly_linked_list_count(doublylinkedlist_t *base_doublylinkedlist);
+
+void doubly_linkedlist_priority_insert(doublylinkedlist_t *base_doublylinkedlist, 
+                                        doublylinkedlist_t *doublylinkedlist,
+                                        int (*compare_function)(void *, void*),
+                                        int offset);
+// Finishing the declarations.
 
 
 #define IS_DOUBLY_LINKED_LIST_EMPTY(dllptr)                                                                 \
