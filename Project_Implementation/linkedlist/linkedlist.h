@@ -12,6 +12,24 @@ typedef struct _doublylinkedlist
 // a part of the node, not as a pointer which points to some structure.
 
 
+void doubly_linkedlist_add_next(doublylinkedlist_t *current_doublylinkedlist, 
+                                doublylinkedlist_t *new_doublylinkedlist);
+
+void doubly_linkedlist_add_before(doublylinkedlist_t *base_doublylinkedlist, 
+                                    doublylinkedlist_t *new_doublylinkedlist);
+
+void remove_doubly_linkedlist(doublylinkedlist_t *current_doublylinkedlist);
+
+void initialize_doubly_linkedlist(doublylinkedlist_t *doublylinkedlist);
+
+void doubly_linkedlist_add_last(doublylinkedlist_t *base_doublylinkedlist, 
+                                doublylinkedlist_t *new_doublylinkedlist);
+
+void delete_doubly_linkedlist(doublylinkedlist_t *base_doublylinkedlist);
+
+unsigned int get_doubly_linked_list_count(doublylinkedlist_t *base_doublylinkedlist);
+
+
 #define IS_DOUBLY_LINKED_LIST_EMPTY(dllptr)                                                                 \
     ((dllptr)->right == 0 && (dllptr)->left ==0)
 // Checks if right and left pointers of the linked list are both empty, if so returns True.
