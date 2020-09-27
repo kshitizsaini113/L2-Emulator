@@ -13,32 +13,32 @@ typedef struct _doublylinkedlist
 
 
 // Declaring the functions to be defined in the c file.
-void doubly_linkedlist_add_next(doublylinkedlist_t *current_doublylinkedlist, 
+void doubly_linkedlist_add_next(doublylinkedlist_t *base_doublylinkedlist, 
                                 doublylinkedlist_t *new_doublylinkedlist);
 
-void doubly_linkedlist_add_before(doublylinkedlist_t *base_doublylinkedlist, 
+void doubly_linkedlist_add_before(doublylinkedlist_t *base_doublylinkedlist,
                                     doublylinkedlist_t *new_doublylinkedlist);
 
-void remove_doubly_linkedlist(doublylinkedlist_t *current_doublylinkedlist);
+void remove_doubly_linkedlist(doublylinkedlist_t *doublylinkedlist);
 
 void initialize_doubly_linkedlist(doublylinkedlist_t *doublylinkedlist);
 
-void doubly_linkedlist_add_last(doublylinkedlist_t *base_doublylinkedlist, 
+void doubly_linkedlist_add_last(doublylinkedlist_t *base_doublylinkedlist,
                                 doublylinkedlist_t *new_doublylinkedlist);
 
 void delete_doubly_linkedlist(doublylinkedlist_t *base_doublylinkedlist);
 
 unsigned int get_doubly_linked_list_count(doublylinkedlist_t *base_doublylinkedlist);
 
-void doubly_linkedlist_priority_insert(doublylinkedlist_t *base_doublylinkedlist, 
+void doubly_linkedlist_priority_insert(doublylinkedlist_t *base_doublylinkedlist,     
                                         doublylinkedlist_t *doublylinkedlist,
-                                        int (*compare_function)(void *, void*),
+                                        int (*compare_function)(void *, void *),
                                         int offset);
 // Finishing the declarations.
 
 
 #define IS_DOUBLY_LINKED_LIST_EMPTY(dllptr)                                                                 \
-    ((dllptr)->right == 0 && (dllptr)->left ==0)
+    ((dllptr)->right == 0 && (dllptr)->left == 0)
 // Checks if right and left pointers of the linked list are both empty, if so returns True.
 // Else, it returns false.
 
@@ -73,7 +73,7 @@ void doubly_linkedlist_priority_insert(doublylinkedlist_t *base_doublylinkedlist
 // address value is returned.
 // (void *) typecasts the result to the void pointer so as to handle any type of the data.
 
- 
+
 #define LINKED_LIST_TO_STRUCT(function_name, structure_name, field_name)                                    \
     static inline structure_name * function_name(doublylinkedlist_t *dllptr)                                \
     {                                                                                                       \

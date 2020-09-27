@@ -12,7 +12,7 @@ void initialize_doubly_linkedlist(doublylinkedlist_t *doublylinkedlist)
 // the doubly linked list is empty.
 
 
-void doubly_linkedlist_add_next(doublylinkedlist_t *current_doublylinkedlist, 
+void doubly_linkedlist_add_next(doublylinkedlist_t *current_doublylinkedlist,
                                 doublylinkedlist_t *new_doublylinkedlist)
 {
 // Adds an element at the next position of the current linked list node.
@@ -39,7 +39,7 @@ void doubly_linkedlist_add_next(doublylinkedlist_t *current_doublylinkedlist,
 }
 
 
-void doubly_linkedlist_add_before(doublylinkedlist_t *current_doublylinkedlist, 
+void doubly_linkedlist_add_before(doublylinkedlist_t *current_doublylinkedlist,
                                     doublylinkedlist_t *new_doublylinkedlist)
 {
 // Adds a element at the previous position of the current linked list.
@@ -54,7 +54,7 @@ void doubly_linkedlist_add_before(doublylinkedlist_t *current_doublylinkedlist,
         // Point left of new to NULL and right of new to current.
         // Point left of current to new.
     }
-
+    
     doublylinkedlist_t *temp = current_doublylinkedlist->left;
     temp->right = new_doublylinkedlist;
     new_doublylinkedlist->left = temp;
@@ -70,7 +70,7 @@ void doubly_linkedlist_add_before(doublylinkedlist_t *current_doublylinkedlist,
 void remove_doubly_linkedlist(doublylinkedlist_t *current_doublylinkedlist)
 {
 // Removes the current node from doubly linked list.
-
+    
     if(!current_doublylinkedlist->left)
     {
     // If left node is empty (First Node)
@@ -113,7 +113,7 @@ void delete_doubly_linkedlist(doublylinkedlist_t *base_doublylinkedlist)
 
     doublylinkedlist_t *dllptr = NULL;
     // Create a pointer to iterate so that valuecan be assigned.
-
+               
     ITERATE_DOUBLY_LINKED_LIST_BEGINING(base_doublylinkedlist, dllptr)
     {
         remove_doubly_linkedlist(dllptr);
@@ -122,7 +122,7 @@ void delete_doubly_linkedlist(doublylinkedlist_t *base_doublylinkedlist)
 }
 
 
-void doubly_linkedlist_add_last(doublylinkedlist_t *base_doublylinkedlist, 
+void doubly_linkedlist_add_last(doublylinkedlist_t *base_doublylinkedlist,
                                 doublylinkedlist_t *new_doublylinkedlist)
 {
 // Adds an element to the last of a linked list.
@@ -130,13 +130,13 @@ void doubly_linkedlist_add_last(doublylinkedlist_t *base_doublylinkedlist,
     doublylinkedlist_t *dllptr = NULL;
     doublylinkedlist_t *prevdllptr = NULL;
     // Assigns a null pointer to be used later.
-
+    
     ITERATE_DOUBLY_LINKED_LIST_BEGINING(base_doublylinkedlist, dllptr)
     {
         prevdllptr = dllptr;
     } ITERATE_DOUBLY_LINKED_LIST_END(base_doublylinkedlist, dllptr);
     // Using macrodefined loop to iterate over each element of list to reach to the end of the list.
-
+  
     if(prevdllptr)
     {
         doubly_linkedlist_add_next(prevdllptr, new_doublylinkedlist);
@@ -171,7 +171,7 @@ unsigned int get_doubly_linked_list_count(doublylinkedlist_t *base_doublylinkedl
 
 void doubly_linkedlist_priority_insert(doublylinkedlist_t *base_doublylinkedlist, 
                                         doublylinkedlist_t *doublylinkedlist,
-                                        int (*compare_function)(void *, void*),
+                                        int (*compare_function)(void *, void *),
                                         int offset)
 {
 // Performing priority insertion on a linked list.
@@ -196,8 +196,8 @@ void doubly_linkedlist_priority_insert(doublylinkedlist_t *base_doublylinkedlist
     {
     // If only one node is present in the linked list.
 
-        if(compare_function(LINKED_LIST_DATA_FROM_OFFSET(base_doublylinkedlist->right, offset),
-                            LINKED_LIST_DATA_FROM_OFFSET(doublylinkedlist, offset)) == -1 )
+        if(compare_function(LINKED_LIST_DATA_FROM_OFFSET(base_doublylinkedlist->right, offset), 
+                            LINKED_LIST_DATA_FROM_OFFSET(doublylinkedlist, offset)) == -1)
         {
             doubly_linkedlist_add_next(base_doublylinkedlist->right, doublylinkedlist);
         }
@@ -206,18 +206,20 @@ void doubly_linkedlist_priority_insert(doublylinkedlist_t *base_doublylinkedlist
             doubly_linkedlist_add_next(base_doublylinkedlist, doublylinkedlist);
         }
         // Compares the priority of the elements in the list and check whose priority is greater, then adding accordingly.
+        return;
     }
 
-    if(compare_function(LINKED_LIST_DATA_FROM_OFFSET(doublylinkedlist, offset),
+    if(compare_function(LINKED_LIST_DATA_FROM_OFFSET(doublylinkedlist, offset), 
                         LINKED_LIST_DATA_FROM_OFFSET(base_doublylinkedlist->right, offset)) == -1)
     {
         doubly_linkedlist_add_next(base_doublylinkedlist, doublylinkedlist);
         // Compares the priority of the elements in the list and check whose priority is greater, then adding accordingly at the begining
+        return;
     }
 
     ITERATE_DOUBLY_LINKED_LIST_BEGINING(base_doublylinkedlist, current)
     {
-        if(compare_function(LINKED_LIST_DATA_FROM_OFFSET(doublylinkedlist, offset),
+        if(compare_function(LINKED_LIST_DATA_FROM_OFFSET(doublylinkedlist, offset), 
                             LINKED_LIST_DATA_FROM_OFFSET(current, offset)) != -1)
         {
             previous = current;
@@ -231,4 +233,4 @@ void doubly_linkedlist_priority_insert(doublylinkedlist_t *base_doublylinkedlist
 
     doubly_linkedlist_add_next(previous, doublylinkedlist);
     // If no condition is satisfied, then adding to the last of linked list.
-}
+} 
