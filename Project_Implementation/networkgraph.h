@@ -67,11 +67,11 @@ void insert_link_between_two_network_nodes(network_node_t *network_node1,
                                             char *reciever_interface_name, 
                                             unsigned int traversal_cost);
 
-void dump_graph(network_graph_t *network_graph);
+void dump_network_graph(network_graph_t *network_graph);
 
-void dump_node(network_node_t *network_node);
+void dump_network_node(network_node_t *network_node);
 
-void dump_interface(network_interface_t *network_interface);
+void dump_network_interface(network_interface_t *network_interface);
 // Finishing the declarations.
 
 
