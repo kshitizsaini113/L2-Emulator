@@ -76,3 +76,64 @@ network_node_t * create_network_graph_node(network_graph_t *network_graph,
 
     return network_node;
 }
+
+
+void dump_network_graph(network_graph_t *network_graph)
+{
+// Prints the information about network graph on the screen.
+
+    doublylinkedlist_t *current;
+    network_node_t *network_node;
+    // Creates variables for future use.
+    
+    printf("Network Topology Name : %s\n\n\n", network_graph->network_topology_name);
+    // Printing the network topology name.
+
+    ITERATE_DOUBLY_LINKED_LIST_BEGINING(&network_graph->network_node_list, current){
+
+        network_node = graph_glue_to_node(current);
+        dump_network_node(network_node);    
+    } ITERATE_DOUBLY_LINKED_LIST_END(&network_graph->network_node_list, current);
+    // Using macrodefined function to iterate over the doubly linked list to print the data of each node of the network.
+}
+
+
+void dump_network_node(network_node_t *network_node)
+{
+// Prints the information about network nodes on the screen.
+
+    unsigned int i = 0;
+    network_interface_t *network_interface;
+    // Initialises the variables for future use.
+
+    printf("Network Node Name : %s\n", network_node->network_node_name);
+    // Prints the node name on the screen.
+    for( ; i < MAXIMUM_INTERFACE_PER_NODE; i++)
+    {   
+        network_interface = network_node->interface[i];
+        if(!network_interface)
+        {
+            break;
+        }
+        dump_network_interface(network_interface);
+    }
+    printf("\n");
+    // Iterates over each interface of the node and prints the information about it.
+    // When all the used interfaces are complete then break the loop.
+}
+
+
+void dump_network_interface(network_interface_t *network_interface)
+{
+// Prints the information about the interface.
+
+    network_link_t *network_link = network_interface->attached_link;
+    network_node_t *neighbour_node = get_neighbour_node(network_interface);
+    // Fetches the information about the attached link as well as the neighbour nodes.
+
+    printf("Local Node : %s, Interface Name : %s, Neighbour Node : %s, Traversal Cost : %u\n", 
+            network_interface->attached_node->network_node_name, 
+            network_interface->interface_name, neighbour_node->network_node_name,
+            network_link->traversal_cost); 
+    // Prints the information about a single node on the screen.
+}
