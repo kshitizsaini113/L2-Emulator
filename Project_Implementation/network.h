@@ -133,7 +133,7 @@ boolean_t network_node_unset_interface_ip_address(network_node_t *network_node,
 
 
 // Functions to dump information on the screen
-void dump_network_graph(network_graph_t *network_graph);
+void dump_network_graph_net(network_graph_t *network_graph);
 
 void dump_network_node_properties(network_node_t *network_node);
 
