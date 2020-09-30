@@ -103,5 +103,43 @@ static inline void initialize_interface_network_properties(interface_network_pro
 void interface_assign_mac_address(network_interface_t *network_interface);
 
 
+// Defining shorthand macros to avoid code repetition
+#define INTERFACE_MAC(interface_ptr)                                                            \
+    ((interface_ptr)->interface_network_properties.mac_address.mac_address)
+
+#define INTERFACE_IP(interface_ptr)                                                             \
+    ((interface_ptr)->interface_network_properties.ip_address.ip_address)
+
+#define NODE_LOOPBACK_ADDRESS(network_node_ptr)                                                 \
+    (network_node_ptr->node_network_properties.loopback_address.ip_address)
+// Finishing the shorthand macro declaration
+
+
+// Defining functions to be defined as API in network.c
+boolean_t network_node_device_type(network_node_t *network_node,
+                                    unsigned int F);
+
+boolean_t network_node_set_loopback_address(network_node_t *network_node, 
+                                            char *ip_address);
+
+boolean_t network_node_set_interface_ip_address(network_node_t *network_node, 
+                                                char *local_interface, 
+                                                char *ip_address, 
+                                                char mask);
+                                    
+boolean_t network_node_unset_interface_ip_address(network_node_t *network_node, 
+                                                    char *local_interface);
+// Function declarations
+
+
+// Functions to dump information on the screen
+void dump_network_graph(network_graph_t *network_graph);
+
+void dump_network_node_properties(network_node_t *network_node);
+
+void dump_network_interface_properties(network_interface_t *network_interfacef);
+// Function declaration ends
+
+
 #endif
 // Ending Header File Management
