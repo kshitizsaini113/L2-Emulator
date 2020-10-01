@@ -6,11 +6,15 @@ Here, we are focusing on implementation of network graph and its functions in th
 
 2) The file [networkgraph.c](networkgraph.c) contains the functions definations for the functions defined in [networkgraph.h](networkgraph.h) to be used for Network Graph implementation.
 
-3) The file [network_topology.c](network_topology.c) is used for creating network topologies.
+3) The file [network.h](network.h) contains the structures, macros and function declarations used for the Networking part. *i.e. IP, MAC and Loopback* 
 
-4) The file [main.c](main.c) is used to call the functions.
+4) The file [network.c](network.c) contains the functional definations for the functions defined in [network.h](network.h) to assign network properties to our network. *Network constrains like IP, MAC and Loopback.*
 
-5) Makefile is created to make the project compilation easy.
+5) The file [network_topology.c](network_topology.c) is used for creating network topologies.
+
+6) The file [main.c](main.c) is used to call the functions.
+
+7) Makefile is created to make the project compilation easy.
 
 ## Running the project
 

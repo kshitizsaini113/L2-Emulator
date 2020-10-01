@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
+#include <memory.h>
 // Including the required header files.
 
 
@@ -39,6 +40,12 @@ void insert_link_between_two_network_nodes(network_node_t *network_node1,
     empty_intf_slot = get_network_node_interface_available_slots(network_node2);
     network_node2->interface[empty_intf_slot] = &network_link->interface2;
     // Checks for the available slot and if the slot is available then assign it to the nodes.
+
+    initialize_interface_network_properties(&network_link->interface1.interface_network_properties);
+    initialize_interface_network_properties(&network_link->interface2.interface_network_properties);
+
+    interface_assign_mac_address(&network_link->interface1);
+    interface_assign_mac_address(&network_link->interface2);
 }
 
 
@@ -68,6 +75,8 @@ network_node_t * create_network_graph_node(network_graph_t *network_graph,
     strncpy(network_node->network_node_name, network_node_name, NETWORK_NODE_NAME_SIZE);
     network_node->network_node_name[NETWORK_NODE_NAME_SIZE] = '\0';
     // Assigns memory and name to the newly created node
+
+    initialize_node_network_properties(&network_node->node_network_properties);
 
     initialize_doubly_linkedlist(&network_node->graph_glue);
     doubly_linkedlist_add_next(&network_graph->network_node_list, &network_node->graph_glue);
@@ -131,9 +140,10 @@ void dump_network_interface(network_interface_t *network_interface)
     network_node_t *neighbour_node = get_neighbour_node(network_interface);
     // Fetches the information about the attached link as well as the neighbour nodes.
 
-    printf("Local Node : %s, Interface Name : %s, Neighbour Node : %s, Traversal Cost : %u\n", 
-            network_interface->attached_node->network_node_name, 
-            network_interface->interface_name, neighbour_node->network_node_name,
+    printf("Interface Name : %s\n\tNeighbour Node : %s, Local Node : %s, Traversal Cost : %u\n", 
+            network_interface->interface_name,
+            network_interface->attached_node->network_node_name,
+            neighbour_node->network_node_name,
             network_link->traversal_cost); 
     // Prints the information about a single node on the screen.
 }
