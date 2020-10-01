@@ -5,6 +5,7 @@
 
 #include <assert.h>
 #include "linkedlist/linkedlist.h"
+#include "network.h"
 // Including the required header files
 
 
@@ -25,6 +26,7 @@ typedef struct network_interface_
     char interface_name[NETWORK_INTERFACE_NAME_SIZE];
     struct network_node_ *attached_node;
     struct network_link_ *attached_link;
+    interface_network_properties_t interface_network_properties;
 } network_interface_t;
 
 
@@ -43,6 +45,7 @@ struct network_node_
     char network_node_name[NETWORK_NODE_NAME_SIZE];
     network_interface_t *interface[MAXIMUM_INTERFACE_PER_NODE];
     doublylinkedlist_t graph_glue;
+    node_network_properties_t node_network_properties;
 };
 LINKED_LIST_TO_STRUCT(graph_glue_to_node, network_node_t, graph_glue);
 
@@ -117,6 +120,29 @@ static inline int get_network_node_interface_available_slots(network_node_t *net
 
     return -1;
     // Returns -1 if all the interfaces are full.
+}
+
+
+static inline network_interface_t * get_network_node_interface_by_name(network_node_t *network_node,
+                                                                        char *interface_name)
+{
+    int i;
+    network_interface_t *interface;
+
+    for(i=0; i<MAXIMUM_INTERFACE_PER_NODE; i++)
+    {
+        interface = network_node->interface[i];
+        if(!interface)
+        {
+            return NULL;
+        }
+        if(strncmp(interface->interface_name, interface_name, NETWORK_INTERFACE_NAME_SIZE) == 0)
+        {
+            return interface;
+        }
+    }
+
+    return NULL;
 }
 
 
