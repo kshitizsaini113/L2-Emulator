@@ -1,25 +1,29 @@
-CC=gcc
-CFLAGS=-g
+COMPILER=gcc
+COMPILER_FLAGS=-g
 TARGET:main.sh
 
-OBJS=linkedlist/linkedlist.o \
-		  networkgraph.o 		   \
-		  network_topology.o
+OBJECT_FILES=linkedlist/linkedlist.o 			\
+		  networkgraph.o 		   				\
+		  network_topology.o					\
+		  network.o
 
-main.sh:main.o ${OBJS}
-	${CC} ${CFLAGS} main.o ${OBJS} -o main.sh
+main.sh:main.o ${OBJECT_FILES}
+	${COMPILER} ${COMPILER_FLAGS} main.o ${OBJECT_FILES} -o main.sh
 
 main.o:main.c
-	${CC} ${CFLAGS} -c main.c -o main.o
+	${COMPILER} ${COMPILER_FLAGS} -c main.c -o main.o
 
 linkedlist/linkedlist.o:linkedlist/linkedlist.c
-	${CC} ${CFLAGS} -c -I linkedlist linkedlist/linkedlist.c -o linkedlist/linkedlist.o
+	${COMPILER} ${COMPILER_FLAGS} -c -I linkedlist linkedlist/linkedlist.c -o linkedlist/linkedlist.o
 
 networkgraph.o:networkgraph.c
-	${CC} ${CFLAGS} -c -I . networkgraph.c -o networkgraph.o
+	${COMPILER} ${COMPILER_FLAGS} -c -I . networkgraph.c -o networkgraph.o
 
 network_topology.o:network_topology.c
-	${CC} ${CFLAGS} -c -I . network_topology.c -o network_topology.o
+	${COMPILER} ${COMPILER_FLAGS} -c -I . network_topology.c -o network_topology.o
+
+network.o:network.c
+	${COMPILER} ${COMPILER_FLAGS} -c -I . network.c -o network.o
 
 
 clean:
