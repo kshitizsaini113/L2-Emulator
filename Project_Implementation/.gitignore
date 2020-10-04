@@ -2,3 +2,6 @@
 *.exe
 *.o
 *.sh
+CMD_HIST_RECORD_FILE.txt
+*.a
+exe
