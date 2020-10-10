@@ -12,9 +12,13 @@ Here, we are focusing on implementation of network graph and its functions in th
 
 5) The file [network_topology.c](network_topology.c) is used for creating network topologies.
 
-6) The file [main.c](main.c) is used to call the functions.
+6) The file [utils.h](utils.h) is used to define various structures.
 
-7) Makefile is created to make the project compilation easy.
+7) The file [main.c](main.c) is used to call the functions.
+
+8) Makefile is created to make the project compilation easy.
+
+> LibCli - An external library is used to add the functionality of Command Line to the project and make the project more interactive. We often use Menu-driven programs but they fails when we have a huge functionality to implement. To overcome the challenge, we are using LibCli.
 
 ## Running the project
 
