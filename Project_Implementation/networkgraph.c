@@ -76,6 +76,9 @@ network_node_t * create_network_graph_node(network_graph_t *network_graph,
     network_node->network_node_name[NETWORK_NODE_NAME_SIZE] = '\0';
     // Assigns memory and name to the newly created node
 
+    initialize_udp_port_socket(network_node);
+    // Initialising the port setting on the time of graph creation.
+
     initialize_node_network_properties(&network_node->node_network_properties);
 
     initialize_doubly_linkedlist(&network_node->graph_glue);

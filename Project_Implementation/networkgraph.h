@@ -45,6 +45,11 @@ struct network_node_
     char network_node_name[NETWORK_NODE_NAME_SIZE];
     network_interface_t *interface[MAXIMUM_INTERFACE_PER_NODE];
     doublylinkedlist_t graph_glue;
+
+    unsigned int udp_port_number;
+    int udp_socket_file_descriptor;
+    // Adding additional members to add communication properties to the node.
+
     node_network_properties_t node_network_properties;
 };
 LINKED_LIST_TO_STRUCT(graph_glue_to_node, network_node_t, graph_glue);
