@@ -10,13 +10,17 @@ Here, we are focusing on implementation of network graph and its functions in th
 
 4) The file [network.c](network.c) contains the functional definations for the functions defined in [network.h](network.h) to assign network properties to our network. *Network constrains like IP, MAC and Loopback.*
 
-5) The file [network_topology.c](network_topology.c) is used for creating network topologies.
+5) The file [communication.h](communication.h) contains the public API defined to be used in the project.
 
-6) The file [utils.h](utils.h) is used to define various structures.
+6) The file [communication.c](communication.c) contains the functional definations for the functions defined in [communication.h](communication.h) to assign communication properties to our project.
 
-7) The file [main.c](main.c) is used to call the functions.
+7) The file [network_topology.c](network_topology.c) is used for creating network topologies.
 
-8) Makefile is created to make the project compilation easy.
+8) The file [utils.h](utils.h) is used to define various structures.
+
+9) The file [main.c](main.c) is used to call the functions.
+
+10) [Makefile](Makefile) is created to make the project compilation easy.
 
 > LibCli - An external library is used to add the functionality of Command Line to the project and make the project more interactive. We often use Menu-driven programs but they fails when we have a huge functionality to implement. To overcome the challenge, we are using LibCli.
 
