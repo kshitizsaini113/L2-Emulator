@@ -8,6 +8,26 @@
 #include <stdlib.h>
 #include <errno.h>
 #include <netdb.h>
+#include <unistd.h>
+
+static int _send_packet_out(int socket_file_descriptor, char *packet_data, unsigned int packet_size, unsigned int destignation_udp_port_number)
+{
+// Sends the packet to the specified IP and port.
+
+    int r_bytes;
+    struct sockaddr_in destignation_address;
+
+    struct hostent *host = (struct hostent *) gethostbyname("127.0.0.1");
+    // Search the host by the name 127.0.0.1
+    destignation_address.sin_family = AF_INET;
+    destignation_address.sin_port = destignation_udp_port_number;
+    destignation_address.sin_addr = *((struct in_addr *)host->h_addr);
+
+    r_bytes = sendto(socket_file_descriptor, packet_data, packet_size, 0, (struct sockaddr *)&destignation_address, sizeof(struct sockaddr));
+    // Sends the packet using sendto system API and returns the number of bytes sent.
+
+    return r_bytes;
+}
 
 static unsigned int udp_port_number = 40000;
 
@@ -57,23 +77,38 @@ void initialize_udp_port_socket(network_node_t *network_node)
     // Assigns the created UDP file descriptor.
 }
 
+
 static char recieved_buffer[MAXIMUM_PACKET_BUFFER_SIZE];
 static char send_buffer[MAXIMUM_PACKET_BUFFER_SIZE];
 
 static void _packet_recieve(network_node_t *recieving_node, char *packet_with_aux_data, unsigned int packet_size)
 {
+// Used to segrigate header and the payload in the packet recieved.
 
+    // char *recieving_interface_name = packet_with_aux_data;
+    // network_interface_t *recieving_interface = get_network_node_interface_by_name(recieving_node, recieving_interface_name);
+
+    // if(!recieving_interface)
+    // {
+    //     printf("ERROR : Packet recieved on unknown network interface %s on network node %s\n", recieving_interface->interface_name, recieving_node->network_node_name);
+    //     return;
+    // }
+
+    // packet_recieve(recieving_node, recieving_interface, packet_with_aux_data + NETWORK_INTERFACE_NAME_SIZE, packet_size - NETWORK_INTERFACE_NAME_SIZE);
 }
+
 
 static void * _network_start_packet_reciever_thread(void *argument)
 {
     // The defined function will be executed by thread.
+    // Based on destignation port number, number in the echoed data recieved by our application,
+    // application hand over the data to destignation node.
 
     network_node_t *network_node;
     doublylinkedlist_t *current;
 
     fd_set active_socket_file_descriptor, backup_socket_file_descriptor;
-    // Defining variables to store file descriptors.
+    // Defining variables to store udp socket file descriptors.
 
     int socket_max_file_descriptor = 0;
     int bytes_recieved = 0;
@@ -115,6 +150,7 @@ static void * _network_start_packet_reciever_thread(void *argument)
         memcpy(&active_socket_file_descriptor, &backup_socket_file_descriptor, sizeof(fd_set));
         // Copying all the backup file descriptor to active.
         select(socket_max_file_descriptor+1, &active_socket_file_descriptor, NULL, NULL, NULL);
+        // Select is a blocking system call.
         // For all the present file descriptor, unless one is activated the system call will 
         // remain blocked.
 
@@ -132,13 +168,14 @@ static void * _network_start_packet_reciever_thread(void *argument)
                 bytes_recieved = recvfrom(network_node->udp_socket_file_descriptor, (char *)recieved_buffer, MAXIMUM_PACKET_BUFFER_SIZE, 0, (struct sockaddr *)&sender_Address, &address_length);
                 // Recieving the data from recvfrom API.
 
-                _packet_receive(network_node, recieved_buffer, bytes_recieved);
+                _packet_recieve(network_node, recieved_buffer, bytes_recieved);
                 // Processing the recieved packet.
             }
         } ITERATE_DOUBLY_LINKED_LIST_END(&topology->network_node_list, current)
 
     }
 }
+
 
 void network_start_packet_reciever_thread(network_graph_t *network_topology)
 {
@@ -157,4 +194,57 @@ void network_start_packet_reciever_thread(network_graph_t *network_topology)
 
     pthread_create(&recieve_packet_thread, &attribute, _network_start_packet_reciever_thread, (void *)network_topology);
     // Creates a thread and uses the followinf function on thread creation.
+}
+
+int send_packet_out(char *packet, unsigned int packet_size, network_interface_t *network_interface)
+{
+// Node communicates by sending data to Node's port number with IP=127.0.0.1
+    int r_bytes=0;
+
+    network_node_t *sending_node = network_interface->attached_node;
+    network_node_t *neighbour_node = get_neighbour_node(network_interface);
+
+    if(!neighbour_node)
+    {
+        // Returns -1 in case no node is found to avoid errors as data can only be transfered
+        // between connecting nodes.
+        return -1;
+    }
+
+    unsigned int destignation_udp_port_number = neighbour_node->udp_port_number;
+
+    int sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
+    // Creating a network udp socket.
+
+    if(sock < 0)
+    {
+        printf("ERROR : Sending Socket Creation failed, errorno = %d", errno);
+        return -1;
+    }
+
+    network_interface_t *other_interface = &network_interface->attached_link->interface1== \
+        network_interface?&network_interface->attached_link->interface2:&network_interface->attached_link->interface1;
+    // Checking which interface to send data to by checking the connected interface.
+
+    memset(send_buffer, 0, MAXIMUM_PACKET_BUFFER_SIZE);
+    // Clears the memory (removes garbage) from the send_buffer
+
+    char *packet_with_auxilarry_data = send_buffer;
+
+    strncpy(packet_with_auxilarry_data, other_interface->interface_name, NETWORK_INTERFACE_NAME_SIZE);
+    // Assigns header to the packet.
+
+    packet_with_auxilarry_data[NETWORK_INTERFACE_NAME_SIZE] = '\0';
+    // Terminates the packet header.
+
+    memcpy(packet_with_auxilarry_data + NETWORK_INTERFACE_NAME_SIZE, packet, packet_size);
+    // Assigns data to the packet.
+
+    r_bytes = _send_packet_out(sock, packet_with_auxilarry_data, packet_size + NETWORK_INTERFACE_NAME_SIZE, destignation_udp_port_number);
+    // Send the packet to the destignation.
+
+    close(sock);
+    // Closes the socket created.
+
+    return r_bytes;
 }

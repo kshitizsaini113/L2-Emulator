@@ -49,6 +49,7 @@ struct network_node_
     unsigned int udp_port_number;
     int udp_socket_file_descriptor;
     // Adding additional members to add communication properties to the node.
+    // On node creation we will assign a unique udp port number to the node.
 
     node_network_properties_t node_network_properties;
 };
