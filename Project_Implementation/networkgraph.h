@@ -152,5 +152,23 @@ static inline network_interface_t * get_network_node_interface_by_name(network_n
 }
 
 
+static inline network_node_t * get_network_node_by_node_name(network_graph_t *topology, char *node_name)
+{
+    network_node_t *network_node;
+    doublylinkedlist_t *current;    
+
+    ITERATE_DOUBLY_LINKED_LIST_BEGINING(&topology->network_node_list, current)
+    {
+        network_node = graph_glue_to_node(current);
+        if(strncmp(network_node->network_node_name, node_name, strlen(node_name)) == 0)
+        {
+            return network_node;
+        }
+    } ITERATE_DOUBLY_LINKED_LIST_END(&topology->network_node_list, current);
+    
+    return NULL;
+}
+
+
 #endif
 // Ending Header File Management

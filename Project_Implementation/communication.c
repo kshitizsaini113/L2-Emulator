@@ -85,16 +85,17 @@ static void _packet_recieve(network_node_t *recieving_node, char *packet_with_au
 {
 // Used to segrigate header and the payload in the packet recieved.
 
-    // char *recieving_interface_name = packet_with_aux_data;
-    // network_interface_t *recieving_interface = get_network_node_interface_by_name(recieving_node, recieving_interface_name);
+    char *recieving_interface_name = packet_with_aux_data;
+    network_interface_t *recieving_interface = get_network_node_interface_by_name(recieving_node, recieving_interface_name);
 
-    // if(!recieving_interface)
-    // {
-    //     printf("ERROR : Packet recieved on unknown network interface %s on network node %s\n", recieving_interface->interface_name, recieving_node->network_node_name);
-    //     return;
-    // }
+    if(!recieving_interface)
+    {
+        printf("ERROR : Packet recieved on unknown network interface %s on network node %s\n", recieving_interface->interface_name, recieving_node->network_node_name);
+        return;
+    }
 
-    // packet_recieve(recieving_node, recieving_interface, packet_with_aux_data + NETWORK_INTERFACE_NAME_SIZE, packet_size - NETWORK_INTERFACE_NAME_SIZE);
+    packet_recieve(recieving_node, recieving_interface, packet_with_aux_data + NETWORK_INTERFACE_NAME_SIZE, packet_size - NETWORK_INTERFACE_NAME_SIZE);
+    // Third argument is the actual data.
 }
 
 
@@ -247,4 +248,14 @@ int send_packet_out(char *packet, unsigned int packet_size, network_interface_t 
     // Closes the socket created.
 
     return r_bytes;
+}
+
+int packet_recieve(network_node_t *network_node, network_interface_t *network_interface, char *packet, unsigned int packet_size)
+{
+// Entry point into data link layer from physical layer
+// Represent the start of ingress journey of the packet start from here in TCP/IP Stack
+
+    printf("Message Recieved : %s, on node : %s, IIF: %s\n", packet, network_node->network_node_name, network_interface->interface_name);
+
+    return 0;
 }

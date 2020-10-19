@@ -5,6 +5,7 @@
 #include <memory.h>
 // Including the required header files.
 
+extern int initialize_udp_port_socket(network_node_t *network_node);
 
 void insert_link_between_two_network_nodes(network_node_t *network_node1,
                                             network_node_t *network_node2,
