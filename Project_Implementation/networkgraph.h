@@ -45,6 +45,12 @@ struct network_node_
     char network_node_name[NETWORK_NODE_NAME_SIZE];
     network_interface_t *interface[MAXIMUM_INTERFACE_PER_NODE];
     doublylinkedlist_t graph_glue;
+
+    unsigned int udp_port_number;
+    int udp_socket_file_descriptor;
+    // Adding additional members to add communication properties to the node.
+    // On node creation we will assign a unique udp port number to the node.
+
     node_network_properties_t node_network_properties;
 };
 LINKED_LIST_TO_STRUCT(graph_glue_to_node, network_node_t, graph_glue);
@@ -142,6 +148,24 @@ static inline network_interface_t * get_network_node_interface_by_name(network_n
         }
     }
 
+    return NULL;
+}
+
+
+static inline network_node_t * get_network_node_by_node_name(network_graph_t *topology, char *node_name)
+{
+    network_node_t *network_node;
+    doublylinkedlist_t *current;    
+
+    ITERATE_DOUBLY_LINKED_LIST_BEGINING(&topology->network_node_list, current)
+    {
+        network_node = graph_glue_to_node(current);
+        if(strncmp(network_node->network_node_name, node_name, strlen(node_name)) == 0)
+        {
+            return network_node;
+        }
+    } ITERATE_DOUBLY_LINKED_LIST_END(&topology->network_node_list, current);
+    
     return NULL;
 }
 

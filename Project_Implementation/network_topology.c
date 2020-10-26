@@ -1,5 +1,7 @@
 #include "networkgraph.h"
+#include "communication.h"
 
+extern void network_start_packet_reciever_thread(network_graph_t *network_topology);
 
 network_graph_t * build_first_network_topology()
 {
@@ -27,6 +29,8 @@ network_graph_t * build_first_network_topology()
     network_node_set_interface_ip_address(router_2, "eth0/3", "30.1.1.1", 24);
     network_node_set_interface_ip_address(router_2, "eth0/5", "40.1.1.1", 24);
 
+    network_start_packet_reciever_thread(network_topology_1);
+    // We will be iterating over UDP file descriptors of each node and we will listen on them.
 
     return network_topology_1;
 }
