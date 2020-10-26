@@ -8,7 +8,8 @@ OBJECT_FILES=linkedlist/linkedlist.o 			\
 		  networkgraph.o 		   				\
 		  network_topology.o					\
 		  network.o								\
-		  cli_module.o
+		  cli_module.o							\
+		  communication.o
 
 main.sh:main.o ${OBJECT_FILES} LibCli/libcli.a
 	${COMPILER} ${COMPILER_FLAGS} main.o ${OBJECT_FILES} -o main.sh ${LIBS}
@@ -30,6 +31,9 @@ network.o:network.c
 
 cli_module.o:cli_module.c
 	${CC} ${CFLAGS} -c -I . cli_module.c  -o cli_module.o
+
+communication.o:communication.c
+	${CC} ${CFLAGS} -c -I . communication.c -o communication.o
 
 LibCli/libcli.a:
 	(cd LibCli; make)

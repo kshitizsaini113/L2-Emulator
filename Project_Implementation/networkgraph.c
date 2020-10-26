@@ -5,6 +5,7 @@
 #include <memory.h>
 // Including the required header files.
 
+extern int initialize_udp_port_socket(network_node_t *network_node);
 
 void insert_link_between_two_network_nodes(network_node_t *network_node1,
                                             network_node_t *network_node2,
@@ -75,6 +76,9 @@ network_node_t * create_network_graph_node(network_graph_t *network_graph,
     strncpy(network_node->network_node_name, network_node_name, NETWORK_NODE_NAME_SIZE);
     network_node->network_node_name[NETWORK_NODE_NAME_SIZE] = '\0';
     // Assigns memory and name to the newly created node
+
+    initialize_udp_port_socket(network_node);
+    // Initialising the port setting on the time of graph creation.
 
     initialize_node_network_properties(&network_node->node_network_properties);
 
