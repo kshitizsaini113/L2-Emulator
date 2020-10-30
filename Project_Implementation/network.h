@@ -43,7 +43,7 @@ typedef struct ip_address_
 
 typedef struct mac_address_
 {
-    char mac_address[48];
+  unsigned  char mac_address[6];
 } mac_address_t;
 // Defining a structure to represent a Mac Address
 
@@ -64,8 +64,6 @@ typedef struct node_network_properties_
 static inline void initialize_node_network_properties(node_network_properties_t *node_network_properties)
 {
 // Initializes the network node.
-    node_network_properties->flags = 0;
-    
     node_network_properties->is_loopback_address_configured = FALSE;
     memset(node_network_properties->loopback_address.ip_address, 0, 16);
     // memset() is used to fill a block of memory with a particular value.
@@ -76,7 +74,7 @@ static inline void initialize_node_network_properties(node_network_properties_t 
             // n   ==> Number of bytes to be filled starting from ptr to be filled
     // memset is used instead of any string assignment because memset clears the budder for assigning
     // a value while string only assigns the value in the specified set and keeps the else value as a 
-    // garbage making us access a completely different thing.
+    // garbage making us access a completely different thing
 }
 
 
@@ -92,7 +90,8 @@ typedef struct interface_network_properties_
 
 static inline void initialize_interface_network_properties(interface_network_properties_t *interface_network_properties)
 {
-    memset(interface_network_properties->mac_address.mac_address, 0, 48);
+     memset(interface_network_properties->mac_address.mac_address, 0, sizeof(interface_network_properties->mac_address.mac_address));
+
 
     interface_network_properties->is_ip_address_configured = FALSE;
     memset(interface_network_properties->ip_address.ip_address, 0, 16);
