@@ -3,17 +3,27 @@
 #include "utils.h"
 #include <stdio.h>
 
+static unsigned int hashing_function_mac(void *pointer, unsigned int max_size)
+{
+    unsigned int mac_address=0, i =0;
+    char *addition_string = (char*)pointer;
+    while(i < max_size)
+    {
+        mac_address += *addition_string;
+        mac_address*=97;
+        addition_string++;
+        i++;
+    }
+    return mac_address;
+}
 
 void interface_assign_mac_address(network_interface_t *network_interface)
 {
+    unsigned int hash_code_val = hashing_function_mac(network_interface, sizeof(network_interface_t));
 // Function used to assigns the mac address to existing interface.
-    memset(INTERFACE_MAC(network_interface), 0, 48);
-    // Clears the memory buffer using memset and assigning 0.
-    strcpy(INTERFACE_MAC(network_interface), network_interface->attached_node->network_node_name);
-    // Copies the attached node name.
-    strcat(INTERFACE_MAC(network_interface), network_interface->interface_name);
-    // Concatenates the current node name.
-    // Converts to MAC address to generate a unique MAC address at random
+    memset(INTERFACE_MAC(network_interface),0,sizeof(INTERFACE_MAC(network_interface)));
+    memcpy(INTERFACE_MAC(network_interface), (char *)&hash_code_val, sizeof(unsigned int));
+    
 }
 
 
