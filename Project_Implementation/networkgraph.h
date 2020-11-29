@@ -68,7 +68,9 @@ typedef struct network_graph_
 network_node_t * create_network_graph_node(network_graph_t *network_graph,
                                             char *network_node_name);
 
+
 network_graph_t * create_new_network_graph(char *network_topology_name);
+
 
 void insert_link_between_two_network_nodes(network_node_t *network_node1, 
                                             network_node_t *network_node2,
@@ -76,9 +78,12 @@ void insert_link_between_two_network_nodes(network_node_t *network_node1,
                                             char *reciever_interface_name, 
                                             unsigned int traversal_cost);
 
+
 void dump_network_graph(network_graph_t *network_graph);
 
+
 void dump_network_node(network_node_t *network_node);
+
 
 void dump_network_interface(network_interface_t *network_interface);
 // Finishing the declarations.
