@@ -1,4 +1,4 @@
-# TCP-IP-Stack-Functionality
+# L2-Emulator
 
 This main objective of the project is to decipt the functionality of the DataLink Layer, also termed as Layer-2. 
 
