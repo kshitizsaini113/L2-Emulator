@@ -226,7 +226,17 @@ void doubly_linkedlist_priority_insert(doublylinkedlist_t *base_doublylinkedlist
             continue;
         }
 
-        doubly_linkedlist_add_next(current, doublylinkedlist);
+        // doubly_linkedlist_add_next(current, doublylinkedlist);
+
+        if(!previous)
+        {
+            doubly_linkedlist_add_next(base_doublylinkedlist, doublylinkedlist);
+        }
+        else
+        {
+            doubly_linkedlist_add_next(previous, doublylinkedlist);
+        }
+        
         return;
     } ITERATE_DOUBLY_LINKED_LIST_END(base_doublylinkedlist, current);
     // Iterating the list completely to check the priority and add at the specified position.

@@ -42,5 +42,21 @@ typedef enum
 // Sets the specified bit by using OR with the 1 at that bit.
 
 
+void apply_subnet_mask(char *prefix, char mask, char *string_prefix);
+
+
+void layer2_fill_with_broadcast_mac(char *mac_array);
+
+
+#define IS_MAC_BROADCAST_ADDRESS(mac_address)                                                       \
+    (mac_address[0] == 0xFF && mac_address[1] == 0xFF && mac_address[2] == 0xFF                     \
+    && mac_address[3] == 0xFF && mac_address[4] == 0xFF && mac_address[5] == 0xFF)
+
+
+#define MAC_BROADCAST_ADDRESS(mac)                                                                  \
+    (mac[0] == 0xFF  &&  mac[1] == 0xFF && mac[2] == 0xFF &&                                        \
+     mac[3] == 0xFF  &&  mac[4] == 0xFF && mac[5] == 0xFF)
+
+
 #endif
 // Ending Header File Management

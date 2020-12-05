@@ -33,6 +33,7 @@ typedef struct network_interface_ network_interface_t;
 typedef struct network_node_ network_node_t;
 // Forward Declarations End
 
+#pragma pack (push, 1)
 
 typedef struct ip_address_
 {
@@ -47,11 +48,18 @@ typedef struct mac_address_
 } mac_address_t;
 // Defining a structure to represent a Mac Address
 
+#pragma pack(pop)
+
+typedef struct arp_table_ arp_table_t;
+typedef struct mac_table_ mac_table_t;
 
 typedef struct node_network_properties_
 {
     unsigned int flags;
     // Flag to represent the number of connected devices.
+
+    arp_table_t *arp_table;
+    mac_table_t *mac_table;
 
     boolean_t is_loopback_address_configured;
     ip_address_t loopback_address;
@@ -61,9 +69,13 @@ typedef struct node_network_properties_
 } node_network_properties_t;
 
 
+extern void initialize_arp_table(arp_table_t **arp_table);
+extern void initialize_mac_table(mac_table_t **mac_table);
+
 static inline void initialize_node_network_properties(node_network_properties_t *node_network_properties)
 {
 // Initializes the network node.
+    node_network_properties->flags = 0;
     node_network_properties->is_loopback_address_configured = FALSE;
     memset(node_network_properties->loopback_address.ip_address, 0, 16);
     // memset() is used to fill a block of memory with a particular value.
@@ -75,12 +87,41 @@ static inline void initialize_node_network_properties(node_network_properties_t 
     // memset is used instead of any string assignment because memset clears the budder for assigning
     // a value while string only assigns the value in the specified set and keeps the else value as a 
     // garbage making us access a completely different thing
+    initialize_arp_table(&(node_network_properties->arp_table));
+    initialize_mac_table(&(node_network_properties->mac_table));
 }
+
+typedef enum{
+    ACCESS,
+    TRUNK,
+    LAYER_2_MODE_UNKNOWN
+} interface_layer_2_mode_t;
+
+static inline char * interface_layer_2_mode_string(interface_layer_2_mode_t interface_layer_2_mode)
+{
+    switch (interface_layer_2_mode)
+    {
+        case ACCESS:
+            return "access";
+        case TRUNK:
+            return "trunk";
+        default:
+            return "LAYER_2_MODE_UNKNOWN";
+    }
+}
+
+
+#define MAXIMUM_VLAN_MEMBERSHIP 10
 
 
 typedef struct interface_network_properties_
 {
     mac_address_t mac_address;
+
+    interface_layer_2_mode_t interface_layer_2_mode;
+
+    unsigned int vlans[MAXIMUM_VLAN_MEMBERSHIP];
+    boolean_t is_ip_address_configured_backup;
 
     boolean_t is_ip_address_configured;
     ip_address_t ip_address;
@@ -90,7 +131,9 @@ typedef struct interface_network_properties_
 
 static inline void initialize_interface_network_properties(interface_network_properties_t *interface_network_properties)
 {
-     memset(interface_network_properties->mac_address.mac_address, 0, sizeof(interface_network_properties->mac_address.mac_address));
+    memset(interface_network_properties->mac_address.mac_address, 0, sizeof(interface_network_properties->mac_address.mac_address));
+    interface_network_properties->interface_layer_2_mode = LAYER_2_MODE_UNKNOWN;
+    memset(interface_network_properties->vlans, 0, sizeof(interface_network_properties->vlans));
 
 
     interface_network_properties->is_ip_address_configured = FALSE;
@@ -111,6 +154,18 @@ void interface_assign_mac_address(network_interface_t *network_interface);
 
 #define NODE_LOOPBACK_ADDRESS(network_node_ptr)                                                 \
     (network_node_ptr->node_network_properties.loopback_address.ip_address)
+
+#define NODE_ARP_TABLE(network_node_ptr)                                                        \
+    (network_node_ptr->node_network_properties.arp_table)
+
+#define NODE_MAC_TABLE(network_node_ptr)                                                        \
+    (network_node_ptr->node_network_properties.mac_table)
+
+#define INTERFACE_LAYER_2_MODE(network_interface_ptr)                                           \
+    (network_interface_ptr->interface_network_properties.interface_layer_2_mode)
+
+#define IS_INTERFACE_LAYER_3_MODE(network_interface_ptr)                                        \
+    (network_interface_ptr->interface_network_properties.is_ip_address_configured == TRUE)
 // Finishing the shorthand macro declaration
 
 
@@ -139,6 +194,7 @@ void dump_network_node_properties(network_node_t *network_node);
 void dump_network_interface_properties(network_interface_t *network_interfacef);
 // Function declaration ends
 
+network_interface_t * node_get_matching_subnet_interface(network_node_t *network_node, char *ip_address);
 
 #endif
 // Ending Header File Management

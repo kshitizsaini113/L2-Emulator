@@ -42,6 +42,11 @@ void initialize_udp_port_socket(network_node_t *network_node)
 {
 // Initializes the udp port socket for the network node.
 
+    if(network_node->udp_port_number)
+    {
+        return;
+    }
+
     network_node->udp_port_number = get_next_udp_port_number();
     // Fetches a unique UDP port number.
 
@@ -55,6 +60,11 @@ void initialize_udp_port_socket(network_node_t *network_node)
     // We send one datagram and get one reply and then the connection terminates.
     // 
     // IPPROTO_UDP defined the protocols to be used for the UDP programming.
+
+    if(udp_socket_file_descriptor == -1)
+    {
+        printf("Network Socket Creation Failed for node %s\n", network_node->network_node_name);
+    }
 
     struct sockaddr_in node_address;
     // The SOCKADDR_IN structure specifies a transport address and port for the AF_INET address family.
@@ -250,12 +260,40 @@ int send_packet_out(char *packet, unsigned int packet_size, network_interface_t 
     return r_bytes;
 }
 
+extern void datalink_layer_frame_recieve(network_node_t *network_node, network_interface_t *network_interface, char *packet, unsigned int packet_size);
+
 int packet_recieve(network_node_t *network_node, network_interface_t *network_interface, char *packet, unsigned int packet_size)
 {
 // Entry point into data link layer from physical layer
 // Represent the start of ingress journey of the packet start from here in TCP/IP Stack
 
-    printf("Message Recieved : %s, on node : %s, IIF: %s\n", packet, network_node->network_node_name, network_interface->interface_name);
+    datalink_layer_frame_recieve(network_node, network_interface, packet, packet_size);
+
+    return 0;
+}
+
+int send_packet_flood(network_node_t *network_node, network_interface_t *exempted_interface, char *packet, unsigned int packet_size)
+{
+    unsigned int i = 0;
+
+    network_interface_t *network_interface;
+
+    for( ; i<MAXIMUM_INTERFACE_PER_NODE; i++)
+    {
+        network_interface = network_node->interface[i];
+
+        if(!network_interface)
+        {
+            return 0;
+        }
+
+        if(network_interface == exempted_interface)
+        {
+            continue;
+        }
+
+        send_packet_out(packet, packet_size, network_interface);
+    }
 
     return 0;
 }

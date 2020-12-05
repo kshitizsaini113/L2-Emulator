@@ -13,4 +13,7 @@ int send_packet_out(char *packet, unsigned int packet_size, network_interface_t 
 int packet_recieve(network_node_t *network_node, network_interface_t *network_interface, char *packet, unsigned int packet_size);
 // Defining API used to recieve packet from the reciever.
 
+int send_packet_flood(network_node_t *network_node, network_interface_t *exempted_interface, char *packet, unsigned int packet_size);
+// Defining API used to flood the packet out of all the interfaces of the node.
+
 #endif
