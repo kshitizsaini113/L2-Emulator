@@ -35,4 +35,4 @@ make
 
 ----------------------
 
-> The code is well defined in form of comments, in case you find any more efficient way, the changes are accepted. Please generate the pull request in the same way the project is already documented making it easier to understand.
+> The code is well defined in form of comments, in case you find any more efficient way, the changes are accepted. Please generate the pull request in the same way the project is already documented making it easier to understand. Refer to CONTRIBUTING for cotributation guidelines.
